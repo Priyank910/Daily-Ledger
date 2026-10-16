@@ -23,6 +23,9 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: gradle
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
       - name: Configure Android SDK
         run: |
           yes | sdkmanager --licenses >/dev/null || true
