@@ -1,54 +1,61 @@
 # Daily Ledger
 
-A clean, offline-first Android bookkeeping app for small shops. Record daily income and expenses, track the current balance, review monthly or custom-date reports, and export account statements as PDF or CSV.
+Daily Ledger is a simple offline Android bookkeeping app for small shops. Record income and expenses, check your balance, and keep your ledger on your own device—no account or internet connection is required.
 
 [![Download Android APK](https://img.shields.io/badge/Download-Android_APK-08775a?style=for-the-badge&logo=android&logoColor=white)](https://github.com/Priyank910/Daily-Ledger/releases/latest/download/Daily-Ledger-Android.apk)
 
-> Android 7.0 or newer is required. Android may ask you to allow installation from your browser or file manager.
+Requires Android 7.0 or newer. Android may ask you to allow installation from your browser or file manager.
 
-## Features
+## Screenshots
 
-- One-time shop name and opening-balance setup
-- Fast daily income and expense entry
-- Automatic running balance
-- Monthly totals that switch automatically without deleting previous records
-- Searchable transaction history
-- Monthly and custom-date reporting
-- PDF and CSV exports through Android's native share/save menu
-- Local-first storage with no account or internet connection required
-- Mobile-first, accessible interface
+These screenshots show sample data from the app.
 
-## How monthly accounting works
+| Home | Transactions | Reports |
+|:---:|:---:|:---:|
+| ![Home screen with balance and income and expense buttons](docs/screenshots/home.png) | ![Transaction history and search](docs/screenshots/transactions.png) | ![Monthly report and export buttons](docs/screenshots/reports.png) |
 
-At the beginning of a new month, the dashboard automatically shows income and expenses for the new month. The current balance carries forward and previous transactions remain available in **Transactions** and **Reports**. Nothing is deleted or reset.
+## What you can do
 
-## Data and backups
+- Set up your shop name and opening balance.
+- Record income and expenses with a date, payment method, and optional note.
+- Check your current balance and monthly cash flow.
+- Search and filter transactions; review monthly, custom-date, and yearly reports.
+- Export PDF and CSV reports using Android's share menu.
+- Export and restore a complete offline JSON backup from **Home → Settings → Backup and restore**.
 
-Ledger data is stored locally on the Android device. Clearing the app's storage or uninstalling it removes that data. Export PDF or CSV statements regularly as backups.
+Monthly totals update automatically when the month changes. Your balance carries forward, and previous transactions remain in your ledger.
+
+## Back up and restore
+
+1. Open **Home → Settings → Backup and restore**, then tap **Export backup**.
+2. Choose a safe location outside Daily Ledger, such as your Downloads folder or another device. The backup contains private financial information.
+3. To restore, choose **Restore backup** in Settings, or on the first setup screen of a fresh installation. Check the shop name and transaction count before confirming replacement.
+
+**Keep a copy outside the app before uninstalling or changing phones.** Uninstalling the app or clearing its data removes its local ledger. PDF and CSV reports are for reading and analysis; they are not restore files in v2.2.2. The v2.2.2 JSON backup format is separate from the backup data embedded in v2.1.0 reports and cannot restore those older PDF/CSV files.
+
+## Installing and updating
+
+Download `Daily-Ledger-Android.apk` from the [latest release](https://github.com/Priyank910/Daily-Ledger/releases/latest). To install an update over an existing app, Android requires the same application ID and signing key and a newer version code. The v1.0.0 and v2.1.0 GitHub APKs used different debug keys from the new release key, so they cannot be updated directly to v2.2.2. Uninstalling an older version deletes its local data; save your records first. Future releases signed with the same release key can update v2.2.2 without uninstalling, while preserving compatible local data.
 
 ## Development
 
 Prerequisites: Node.js 22+, Java 21, and the Android SDK.
 
 ```bash
-npm install
+npm ci
 npm run dev
-```
-
-Create or update the native Android project:
-
-```bash
+node --test tests/*.test.mjs
 npm run android:sync
 cd android
 ./gradlew assembleDebug
 ```
 
-The APK is generated at `android/app/build/outputs/apk/debug/app-debug.apk`.
+The debug APK is at `android/app/build/outputs/apk/debug/app-debug.apk`. Debug builds use a different key from the release and cannot update the release APK.
 
-## Technology
+### Release signing
+
+The GitHub Actions release workflow requires repository secrets `LEDGER_KEYSTORE_BASE64` (the base64-encoded release keystore) and `LEDGER_KEYSTORE_PASSWORD`. The key alias is `daily-ledger`; the key and keystore use the same password. Keep the keystore and password in secure storage, keep a recovery copy, and never commit either to Git. The workflow fails when the secrets are missing rather than publishing a debug-signed APK. Increment Android's `versionCode` for every update. A version tag triggers the release workflow after signing secrets have been configured.
+
+## Built with
 
 React, TypeScript, Vite, Capacitor, jsPDF, and Android Gradle tooling.
-
-## Releases
-
-Pushing a version tag such as `v1.0.0` runs the included GitHub Actions workflow, builds the APK, and attaches it to a GitHub Release automatically.

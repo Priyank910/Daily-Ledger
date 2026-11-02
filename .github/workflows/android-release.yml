@@ -34,11 +34,21 @@ jobs:
         run: npm ci
       - name: Build and sync Android app
         run: npm run android:sync
+      - name: Configure release signing
+        env:
+          LEDGER_KEYSTORE_BASE64: ${{ secrets.LEDGER_KEYSTORE_BASE64 }}
+          LEDGER_KEYSTORE_PASSWORD: ${{ secrets.LEDGER_KEYSTORE_PASSWORD }}
+        run: |
+          test -n "$LEDGER_KEYSTORE_BASE64" && test -n "$LEDGER_KEYSTORE_PASSWORD" || { echo "Release signing secrets are missing"; exit 1; }
+          echo "$LEDGER_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/daily-ledger-release.jks"
       - name: Build installable APK
         working-directory: android
-        run: chmod +x gradlew && ./gradlew assembleDebug
+        env:
+          LEDGER_KEYSTORE_PATH: ${{ runner.temp }}/daily-ledger-release.jks
+          LEDGER_KEYSTORE_PASSWORD: ${{ secrets.LEDGER_KEYSTORE_PASSWORD }}
+        run: chmod +x gradlew && ./gradlew assembleRelease
       - name: Prepare release asset
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk Daily-Ledger-Android.apk
+        run: cp android/app/build/outputs/apk/release/app-release.apk Daily-Ledger-Android.apk
       - name: Publish GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
