@@ -14,7 +14,7 @@ header{position:relative;top:auto}
 .settings-form>label{display:block;margin-top:16px;font-size:13px;font-weight:600;color:#4f5764}.settings-form>label input{margin-top:6px}
 .settings-form .primary{margin-top:16px}
 .sheet{max-height:calc(100dvh - var(--safe-area-inset-top, env(safe-area-inset-top, 0px)) - 12px);overflow-y:auto}
-nav{height:calc(76px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));padding-bottom:calc(8px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)))}
+nav{height:calc(60px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));padding:6px 20px calc(6px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)))}
 .app>main{padding-bottom:calc(104px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)))}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #4ea88b;outline-offset:2px}
 

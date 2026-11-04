@@ -13,7 +13,7 @@ import { pdfAmount } from './pdfAmounts'
 import type { LedgerData, Transaction, TransactionType } from './types'
 
 type Page='home'|'transactions'|'reports'|'settings'
-const money=(n:number)=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:2}).format(n)
+import {money} from './money'
 const totals=(data:LedgerData,items=data.transactions)=>{const income=items.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);const expense=items.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);return{income,expense,balance:data.openingBalance+data.transactions.reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0)}}
 
 function pdfSummary(doc:jsPDF,income:number,expense:number,net:number,balanceLabel:string,balance:number){
