@@ -22,3 +22,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 
 /* Keep a little breathing room above the balance. */
 header{border-bottom:0}.app>main:not(.inner-page){padding-top:12px}
+
+/* Make entry amounts easy to read and keep navigation controls balanced. */
+.entry-amount input{height:64px;padding-left:48px;font:700 28px Manrope, sans-serif;letter-spacing:-.5px}.entry-amount svg{left:15px;width:24px;color:var(--green)}.entry-amount input::placeholder{color:#a0a8a4}.sheet-title .icon{width:40px;height:40px}.sheet>label{margin-top:16px}.sheet .dates{margin:16px 0 0}.sheet .primary{margin-top:22px}nav button{justify-content:center;gap:2px;padding:0}nav svg{height:22px;flex:none}
